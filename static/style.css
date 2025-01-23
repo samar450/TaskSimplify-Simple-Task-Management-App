@@ -1,0 +1,251 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ecf0f1;
+}
+
+/* Layout */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: white;
+    background: #34495e;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar a:hover {
+    background: #1abc9c;
+}
+
+/* Main Content Styling */
+.main-content {
+    margin-left: 270px;
+    padding: 40px;
+    flex-grow: 1;
+    background-color: #fff;
+}
+
+/* Task Section */
+.task-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Page Title */
+.page-title {
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Task Form Styling */
+.task-form input, 
+.task-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.task-form textarea {
+    height: 80px;
+}
+
+/* Buttons Styling */
+.btn {
+    padding: 12px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.done-btn {
+    background: #2ecc71;
+    color: white;
+}
+
+.done-btn:hover {
+    background: #27ae60;
+}
+
+.priority-btn {
+    background: grey;
+    color: white;
+}
+
+.priority-btn.active {
+    background: red !important;
+    color: white !important;
+}
+
+.clear-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.clear-btn:hover {
+    background: #c0392b;
+}
+
+.sort-btn {
+    background: #27ae60;
+    color: white;
+}
+
+.sort-btn:hover {
+    background: #2ecc71;
+}
+
+/* Task Table Styling */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-table th, 
+.task-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    color: black;
+    background: white;
+}
+
+/* Table Header */
+.task-table th {
+    background: #3498db;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Ensure task description wraps properly with max 75 characters */
+.task-table td:nth-child(4) {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 400px;
+    line-height: 1.5em;
+}
+
+/* Priority Highlight */
+.high-priority {
+    background-color: red !important;
+    color: white !important;
+}
+
+/* Completed Task Highlight */
+.completed-task {
+    text-decoration: line-through;
+    background-color: #d4edda !important;
+    color: #155724 !important;
+}
+
+/* Align delete and done buttons properly */
+.task-actions-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-actions-column button {
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.task-actions-column .delete-btn {
+    background: #e74c3c;
+    color: white;
+}
+
+.task-actions-column .delete-btn:hover {
+    background: #c0392b;
+}
+
+.task-actions-column .done-btn {
+    background: #2ecc71;
+    color: white;
+}
+
+.task-actions-column .done-btn:hover {
+    background: #27ae60;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .task-table th, 
+    .task-table td {
+        font-size: 14px;
+    }
+
+    .task-actions-column {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .task-actions-column button {
+        width: 90px;
+    }
+}

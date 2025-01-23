@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .panel ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .panel ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .panel ul li:last-child {
+            border-bottom: none;
+        }
+
+        .high-priority {
+            color: red;
+            font-weight: bold;
+        }
+
+        .task-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Task Manager</h2>
+            <nav>
+                <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+                <a href="{{ url_for('tasks_page') }}">📋 Tasks</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h1>Dashboard</h1>
+
+            <div class="panel">
+                <h2>High Priority Tasks</h2>
+                <ul>
+                    {% for task in high_priority_tasks %}
+                    <li class="high-priority">{{ task['task'] }} - Due: {{ task['due_date'] }}</li>
+                    {% else %}
+                    <li>No high priority tasks</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="panel">
+                <h2>All Tasks</h2
+                <ul>
+                    {% for task in normal_priority_tasks %}
+                    <li>{{ task['task'] }} - Due: {{ task['due_date'] }}</li>
+                    {% else %}
+                    <li>No tasks available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="panel">
+                <h2>Task Statistics</h2>
+                <div class="task-stats">
+                    <p>Total Tasks: {{ high_priority_tasks|length + normal_priority_tasks|length }}</p>
+                    <p>Completed Tasks: {{ completed_tasks|length }}</p>
+                    <p>Pending Tasks: {{ (high_priority_tasks|length + normal_priority_tasks|length) - completed_tasks|length }}</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Upcoming Deadlines</h2>
+                <ul>
+                    {% set has_upcoming = false %}
+                    {% for task in upcoming_tasks %}
+                        {% if task['due_date'] and task['due_date'] != 'N/A' and task['due_date'] >= current_date %}
+                            <li>{{ task['task'] }} - Due: {{ task['due_date'] }}</li>
+                            {% set has_upcoming = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has_upcoming %}
+                        <li>No upcoming deadlines</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function markTaskDone(index) {
+            fetch(`/mark_done/${index}`, {
+                method: 'POST'
+            }).then(response => response.json()).then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Failed to mark task as done');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
