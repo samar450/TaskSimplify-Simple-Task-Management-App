@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Your Tasks</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
             <h2>Task Manager</h2>
             <nav>
-                <a href="tasks.html" class="nav-link active">📋 Tasks</a>
+                <a href="{{ url_for('tasks_page') }}" class="nav-link active">📋 Tasks</a>
             </nav>
             <button id="dark-mode-toggle" class="dark-mode-btn">🌙 Dark Mode</button>
         </aside>
@@ -20,6 +20,7 @@
             <h1>Manage Your Tasks</h1>
 
             <div class="panel-container">
+                <!-- Task Form Panel -->
                 <div class="panel form-panel">
                     <h2>Task Form</h2>
                     <form id="task-form">
@@ -35,6 +36,7 @@
                     </form>
                 </div>
 
+                <!-- Task Actions Panel -->
                 <div class="panel task-actions-panel">
                     <h2>Task Actions</h2>
                     <div class="task-actions">
@@ -55,21 +57,29 @@
                     </tr>
                 </thead>
                 <tbody id="task-list">
-                    <tr>
-                        <td>Sample Task</td>
-                        <td>2025-02-01</td>
-                        <td>12:00 PM</td>
-                        <td>Sample Description</td>
+                    {% for task in tasks %}
+                    <tr class="{% if task.priority == 'high' %} high-priority{% endif %}{% if task.completed %} completed-task{% endif %}">
+                        <td>{{ task.task }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.due_time }}</td>
+                        <td>{{ task.description }}</td>
                         <td>
-                            <button class="btn delete-btn">Delete</button>
-                            <button class="btn done-btn">Done</button>
+                            <button class="btn delete-btn" onclick="deleteTask({{ loop.index0 }})">Delete</button>
+                            <button class="btn done-btn" onclick="toggleDone({{ loop.index0 }})">
+                                {% if task.completed %}Undo{% else %}Done{% endif %}
+                            </button>
                         </td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center;">No tasks available</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </main>
     </div>
 
-    <script src="static/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

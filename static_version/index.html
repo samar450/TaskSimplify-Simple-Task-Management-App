@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks</title>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
@@ -14,12 +14,12 @@
                 <ul class="sidebar-menu">
                     <li class="menu-header">Main</li>
                     <li>
-                        <a href="index.html" class="menu-item active">
+                        <a href="{{ url_for('dashboard') }}" class="menu-item {% if request.path == url_for('dashboard') %}active{% endif %}">
                             🏠 Dashboard
                         </a>
                     </li>
                     <li>
-                        <a href="tasks.html" class="menu-item">
+                        <a href="{{ url_for('tasks_page') }}" class="menu-item {% if request.path == url_for('tasks_page') %}active{% endif %}">
                             📋 Tasks
                         </a>
                     </li>
@@ -31,7 +31,7 @@
             <h1>Manage Tasks</h1>
             <div class="task-form-card">
                 <h2>Add a New Task</h2>
-                <form action="#" method="POST" class="task-form">
+                <form action="{{ url_for('add_task') }}" method="POST" class="task-form">
                     <input type="text" name="task" placeholder="Task Name" required maxlength="30">
                     <textarea name="description" placeholder="Task Description" maxlength="100"></textarea>
                     <input type="date" name="due_date">
@@ -46,17 +46,26 @@
             <div class="task-list-card">
                 <h2>Your Tasks</h2>
                 <ul class="task-list">
-                    <li class="normal">
-                        <span><strong>Sample Task 1</strong></span>
-                        <span>Sample description</span>
-                        <span>2025-01-30 10:00 AM</span>
-                        <a href="#" class="delete-btn">Delete</a>
+                    {% for task in tasks %}
+                    <li class="{{ 'high-priority' if task['priority'] == 'high' else 'normal' }}">
+                        <span><strong>{{ task['task'] }}</strong></span>
+                        <span>{{ task['description'] }}</span>
+                        <span>{{ task['due_date'] }} {{ task['due_time'] }}</span>
+                        <a href="#" class="delete-btn delete-task" data-url="{{ url_for('delete_task', task_index=loop.index0) }}">Delete</a>
                     </li>
+                    {% endfor %}
                 </ul>
             </div>
         </main>
     </div>
 
-    <script src="static/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        function confirmDelete(url) {
+            if (confirm('Are you sure you want to delete this task?')) {
+                window.location.href = url;
+            }
+        }
+    </script>
 </body>
 </html>
