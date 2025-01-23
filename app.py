@@ -5,7 +5,6 @@ from datetime import datetime
 app = Flask(__name__)
 TASK_FILE = "tasks.json"
 
-# Function to load tasks from JSON file
 def load_tasks():
     try:
         with open(TASK_FILE, "r") as file:
@@ -21,7 +20,6 @@ def load_tasks():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
-# Function to save tasks to JSON file
 def save_tasks(tasks):
     with open(TASK_FILE, "w") as file:
         json.dump(tasks, file, indent=4)
@@ -106,7 +104,6 @@ def sort_tasks():
     if not tasks:
         return jsonify({'success': False, 'message': 'No tasks to sort.'})
 
-    # Sort tasks by due date and time while handling 'N/A' values
     tasks.sort(key=lambda x: (x['due_date'] == 'N/A', x['due_date'] or '', x['due_time'] or ''))
     
     save_tasks(tasks)

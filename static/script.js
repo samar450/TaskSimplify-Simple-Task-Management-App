@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("priority-input").value = this.classList.contains("active") ? "high" : "normal";
     });
 
-    // Handle Task Submission with Backend Persistence
     document.getElementById("task-form").addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -25,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error("Error:", error));
     });
 
-    // Delete Task from Frontend and Backend
+    //Delete Task from Frontend and Backend
     window.deleteTask = function(index) {
         if (confirm("Are you sure you want to delete this task?")) {
             fetch(`/delete/${index}`, {
@@ -43,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    // Toggle Task Completion with Backend Persistence
     window.toggleDone = function(index) {
         fetch(`/mark_done/${index}`, {
             method: 'POST'
@@ -51,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                location.reload();  // Reload to reflect changes
+                location.reload();  
             } else {
                 alert("Failed to update task status.");
             }
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error("Error:", error));
     };
 
-    // Clear All Tasks with Backend Sync
+    // Clear All Tasks with the Backend Sync
     window.clearTasks = function() {
         fetch('/clear', {
             method: 'POST'
@@ -91,14 +89,12 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Error:', error));
     };
 
-    // Dark Mode Toggle
     const darkModeToggle = document.getElementById('dark-mode-toggle');
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         localStorage.setItem('darkMode', document.body.classList.contains('dark-mode') ? 'enabled' : 'disabled');
     });
 
-    // Load Dark Mode Preference
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
     }
