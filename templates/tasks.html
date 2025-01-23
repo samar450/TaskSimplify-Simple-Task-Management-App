@@ -11,7 +11,7 @@
         <aside class="sidebar">
             <h2>Task Manager</h2>
             <nav>
-                <a href="tasks.html" class="nav-link active">📋 Tasks</a>
+                <a href="#" class="nav-link active">📋 Tasks</a>
             </nav>
             <button id="dark-mode-toggle" class="dark-mode-btn">🌙 Dark Mode</button>
         </aside>
@@ -55,16 +55,24 @@
                     </tr>
                 </thead>
                 <tbody id="task-list">
-                    <tr>
-                        <td>Sample Task</td>
-                        <td>2025-02-01</td>
-                        <td>12:00 PM</td>
-                        <td>Sample Description</td>
+                    {% for task in tasks %}
+                    <tr class="{{ 'high-priority' if task['priority'] == 'high' else '' }} {{ 'completed-task' if task['completed'] else '' }}">
+                        <td>{{ task['task'] }}</td>
+                        <td>{{ task['due_date'] }}</td>
+                        <td>{{ task['due_time'] }}</td>
+                        <td>{{ task['description'] }}</td>
                         <td>
-                            <button class="btn delete-btn">Delete</button>
-                            <button class="btn done-btn">Done</button>
+                            <button class="btn delete-btn" onclick="deleteTask({{ loop.index0 }})">Delete</button>
+                            <button class="btn done-btn" onclick="toggleDone({{ loop.index0 }})">
+                                {% if task['completed'] %} Undo {% else %} Done {% endif %}
+                            </button>
                         </td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">No tasks available</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </main>

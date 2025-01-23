@@ -25,35 +25,14 @@ def save_tasks(tasks):
         json.dump(tasks, file, indent=4)
 
 @app.route('/')
-def dashboard():
+def index():
     tasks = load_tasks()
-    current_date = datetime.today().strftime('%Y-%m-%d')
-
-    high_priority_tasks = [task for task in tasks if task.get('priority') == 'high']
-    normal_priority_tasks = [task for task in tasks if task.get('priority') == 'normal']
-    completed_tasks = [task for task in tasks if task.get('completed', False)]
-
-    upcoming_tasks = [
-        task for task in tasks
-        if task['due_date'] and task['due_date'] != 'N/A' and task['due_date'] >= current_date
-    ]
-    upcoming_tasks = sorted(upcoming_tasks, key=lambda x: x['due_date'])[:5]
-
-    return render_template(
-        'dashboard.html',
-        high_priority_tasks=high_priority_tasks,
-        normal_priority_tasks=normal_priority_tasks,
-        completed_tasks=completed_tasks,
-        upcoming_tasks=upcoming_tasks,
-        current_date=current_date
-    )
-
+    return render_template('tasks.html', tasks=tasks)
 
 @app.route('/tasks')
 def tasks_page():
     tasks = load_tasks()
     return render_template('tasks.html', tasks=tasks)
-
 
 @app.route('/add', methods=['POST'])
 def add_task():

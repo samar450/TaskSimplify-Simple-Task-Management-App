@@ -37,6 +37,12 @@ body.dark-mode .task-table td {
     color: #ecf0f1;
 }
 
+/* Dark Mode High Priority Task Border Styling */
+body.dark-mode .high-priority {
+    border: 2px solid red !important;  /* Add a red border around high-priority tasks */
+    font-weight: bold;
+}
+
 /* Sidebar Styling */
 .sidebar {
     width: 250px;
@@ -262,6 +268,7 @@ body.dark-mode .toggle-btn:hover {
     background-color: #ffcccc !important;
     color: red !important;
     font-weight: bold;
+    border: 2px solid red !important;  /* Red border around high-priority tasks */
 }
 
 /* Completed Task Highlight */

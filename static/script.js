@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error("Error:", error));
     });
 
-    //Delete Task from Frontend and Backend
+    // Delete Task from Frontend and Backend
     window.deleteTask = function(index) {
         if (confirm("Are you sure you want to delete this task?")) {
             fetch(`/delete/${index}`, {

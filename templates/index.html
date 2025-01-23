@@ -1,10 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; URL='tasks.html'" />
-    <title>Redirecting...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-    <p>If you are not redirected, <a href="tasks.html">click here</a>.</p>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Task Manager</h2>
+            <nav>
+                <ul class="sidebar-menu">
+                    <li class="menu-header">Main</li>
+                    <li>
+<!-- <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a> -->
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tasks.html" class="menu-item">
+                            📋 Tasks
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <h1>Manage Tasks</h1>
+            <div class="task-form-card">
+                <h2>Add a New Task</h2>
+                <form action="#" method="POST" class="task-form">
+                    <input type="text" name="task" placeholder="Task Name" required maxlength="30">
+                    <textarea name="description" placeholder="Task Description" maxlength="100"></textarea>
+                    <input type="date" name="due_date">
+                    <input type="time" name="due_time">
+                    <label>
+                        <input type="checkbox" name="priority" value="high"> High Priority
+                    </label>
+                    <button type="submit">Add Task</button>
+                </form>
+            </div>
+
+            <div class="task-list-card">
+                <h2>Your Tasks</h2>
+                <ul class="task-list">
+                    <li class="normal">
+                        <span><strong>Sample Task 1</strong></span>
+                        <span>Sample description</span>
+                        <span>2025-01-30 10:00 AM</span>
+                        <a href="#" class="delete-btn">Delete</a>
+                    </li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script src="static/script.js"></script>
 </body>
 </html>
