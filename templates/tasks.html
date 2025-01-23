@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Your Tasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Task Manager</h2>
+            <nav>
+                <ul class="sidebar-menu">
+                    <li><a href="{{ url_for('dashboard') }}">🏠 Dashboard</a></li>
+                    <li><a href="{{ url_for('tasks_page') }}" class="active">📋 Tasks</a></li>
+                </ul>
+            </nav>
+            <button id="dark-mode-toggle" class="btn">Toggle Dark Mode</button>
+        </aside>
+
+        <main class="main-content">
+            <div class="task-section">
+                <h1 class="page-title text-center">Manage Your Tasks</h1>
+
+                <div class="task-form-card">
+                    <form action="{{ url_for('add_task') }}" method="POST" class="task-form">
+                        <div class="form-row">
+                            <input type="text" name="task" placeholder="Enter task (Max 30 chars)" maxlength="30" required>
+                            <input type="date" name="due_date">
+                            <input type="time" name="due_time">
+                        </div>
+                        <textarea name="description" placeholder="Enter description (Max 75 chars)" maxlength="75"></textarea>
+                        <div class="form-actions">
+                            <button type="submit" class="btn add-task">Add Task</button>
+                            <button id="priority-btn" class="btn priority-btn" type="button">High Priority</button>
+                        </div>
+                        <input type="hidden" id="priority-input" name="priority" value="normal">
+                    </form>
+                </div>
+
+                <div class="task-header-container">
+                    <h2>Your Tasks</h2>
+                    <div class="task-actions-panel">
+                        <h3>Task Actions</h3>
+                        <button type="button" class="btn clear-btn" onclick="clearTasks()">Clear Tasks</button>
+                        <button type="button" class="btn sort-btn" onclick="sortTasks()">Sort Tasks</button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="task-table">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Due Date</th>
+                                <th>Due Time</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="task-list">
+                            {% for task in tasks %}
+                            <tr class="{% if task['priority'] == 'high' %}high-priority{% endif %} {% if task['completed'] %}completed-task{% endif %}">
+                                <td class="task-name">{{ task['task'] }}</td>
+                                <td>{{ task['due_date'] or 'N/A' }}</td>
+                                <td>{{ task['due_time'] or 'N/A' }}</td>
+                                <td class="task-desc">{{ task['description'] }}</td>
+                                <td class="task-actions-column">
+                                    <button class="btn delete-btn" onclick="deleteTask(this)">Delete</button>
+                                    <button class="btn done-btn" onclick="toggleDone(this)">Done</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>                        
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
