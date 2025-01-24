@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // Priority Button Toggle
     document.getElementById("priority-btn").addEventListener("click", function() {
         this.classList.toggle("active");
         document.getElementById("priority-input").value = this.classList.contains("active") ? "high" : "normal";
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => {
             if (response.redirected) {
-                window.location.href = response.url; // Reload to fetch updated tasks
+                window.location.href = response.url; 
             } else {
                 alert('Failed to add task.');
             }
@@ -24,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error("Error:", error));
     });
 
-    // Delete Task from Frontend and Backend
     window.deleteTask = function(index) {
         if (confirm("Are you sure you want to delete this task?")) {
             fetch(`/delete/${index}`, {
@@ -33,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    location.reload();  // Reload to reflect changes
+                    location.reload();  
                 } else {
                     alert("Failed to delete task.");
                 }
@@ -57,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error("Error:", error));
     };
 
-    // Clear All Tasks with the Backend Sync
     window.clearTasks = function() {
         fetch('/clear', {
             method: 'POST'
@@ -73,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error("Error:", error));
     };
 
-    // Sort Tasks with Backend Sync
     window.sortTasks = function() {
         fetch('/sort', {
             method: 'GET'
