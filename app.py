@@ -70,7 +70,6 @@ def add_task():
     return redirect(url_for('index'))
 
 # Route for deleting a task
-# Route for deleting a task
 @app.route('/delete/<int:task_id>', methods=['POST'])
 @login_required
 def delete_task(task_id):
