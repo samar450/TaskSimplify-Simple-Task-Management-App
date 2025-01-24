@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Task Manager</title>
+    <link rel="stylesheet" href="static/style.css">
+    <style>
+        /* Registration Page Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .register-container {
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #34495e;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 50px; /* Adjust for emoji spacing */
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 22px; /* Adjust emoji size */
+            color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <h2>Create an Account</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="error-message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" onsubmit="return validateForm()">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Choose a username" maxlength="20" required>
+
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <span class="toggle-password" class="toggle-password"onclick="togglePassword()"></span>
+            </div>
+            
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            let username = document.getElementById('username').value.trim();
+            let password = document.getElementById('password').value.trim();
+            let spaceRegex = /\s/;
+
+            if (username.length === 0 || password.length === 0) {
+                alert("Username and password cannot be empty.");
+                return false;
+            }
+
+            if (username.length < 5 || password.length < 6) {
+                alert("Username must be at least 5 characters and password at least 6 characters.");
+                return false;
+            }
+
+            if (spaceRegex.test(username) || spaceRegex.test(password)) {
+                alert("Spaces are not allowed in username or password.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function togglePassword() {
+            let passwordInput = document.getElementById("password");
+            let toggleIcon = document.querySelector(".toggle-password");
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.innerHTML = "🙈"; // Change icon to peeking monkey
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.innerHTML = "👁️"; // Change icon to open eye
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -9,20 +9,22 @@
 <body>
     <div class="container">
         <aside class="sidebar">
-            <h2>Task Manager</h2>
+            <h2>Simple Task Management App</h2>
             <nav>
                 <a href="#" class="nav-link active">📋 Tasks</a>
             </nav>
             <button id="dark-mode-toggle" class="dark-mode-btn">🌙 Dark Mode</button>
+            <a href="{{ url_for('logout') }}" class="btn logout-btn">🚪 Logout</a>
         </aside>
-
+        
+        
         <main class="main-content">
             <h1>Manage Your Tasks</h1>
 
             <div class="panel-container">
                 <div class="panel form-panel">
                     <h2>Task Form</h2>
-                    <form id="task-form">
+                    <form id="task-form" method="POST">
                         <textarea name="task" placeholder="Enter task name..." maxlength="30" required></textarea>
                         <input type="date" name="due_date">
                         <input type="time" name="due_time">
@@ -38,8 +40,8 @@
                 <div class="panel task-actions-panel">
                     <h2>Task Actions</h2>
                     <div class="task-actions">
-                        <button class="btn clear-btn" onclick="clearTasks()">Clear Tasks</button>
-                        <button class="btn sort-btn" onclick="sortTasks()">Sort Tasks</button>
+                        <button class="btn clear-btn" type="button" onclick="clearTasks()">Clear Tasks</button>
+                        <button class="btn sort-btn" type="button" onclick="sortTasks()">Sort Tasks</button>
                     </div>
                 </div>
             </div>
@@ -56,15 +58,15 @@
                 </thead>
                 <tbody id="task-list">
                     {% for task in tasks %}
-                    <tr class="{{ 'high-priority' if task['priority'] == 'high' else '' }} {{ 'completed-task' if task['completed'] else '' }}">
-                        <td>{{ task['task'] }}</td>
-                        <td>{{ task['due_date'] }}</td>
-                        <td>{{ task['due_time'] }}</td>
-                        <td>{{ task['description'] }}</td>
+                    <tr class="{{ 'high-priority' if task.priority == 'high' else '' }} {{ 'completed-task' if task.completed else '' }}">
+                        <td>{{ task.task }}</td>
+                        <td>{{ task.due_date if task.due_date else 'N/A' }}</td>
+                        <td>{{ task.due_time if task.due_time else 'N/A' }}</td>
+                        <td>{{ task.description }}</td>
                         <td>
-                            <button class="btn delete-btn" onclick="deleteTask({{ loop.index0 }})">Delete</button>
-                            <button class="btn done-btn" onclick="toggleDone({{ loop.index0 }})">
-                                {% if task['completed'] %} Undo {% else %} Done {% endif %}
+                            <button class="btn delete-btn" onclick="deleteTask({{ task.id }})">Delete</button>
+                            <button class="btn done-btn" onclick="toggleDone({{ task.id }})">
+                                {{ 'Undo' if task.completed else 'Done' }}
                             </button>
                         </td>
                     </tr>

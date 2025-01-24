@@ -6,6 +6,7 @@ body {
     background-color: #ecf0f1;
     color: #2c3e50;
     transition: all 0.3s ease-in-out;
+    overflow-x: hidden; /* Fix for extra horizontal scrolling */
 }
 
 /* Dark Mode */
@@ -39,7 +40,7 @@ body.dark-mode .task-table td {
 
 /* Dark Mode High Priority Task Border Styling */
 body.dark-mode .high-priority {
-    border: 2px solid red !important;  /* Add a red border around high-priority tasks */
+    border: 2px solid red !important;
     font-weight: bold;
 }
 
@@ -54,6 +55,7 @@ body.dark-mode .high-priority {
     left: 0;
     top: 0;
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .sidebar h2 {
@@ -63,7 +65,10 @@ body.dark-mode .high-priority {
     font-weight: bold;
 }
 
-.sidebar nav .nav-link {
+/* Sidebar Buttons Styling */
+.sidebar .nav-link,
+.sidebar .dark-mode-btn,
+.sidebar .logout-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -75,66 +80,33 @@ body.dark-mode .high-priority {
     font-size: 18px;
     font-weight: bold;
     transition: all 0.3s ease-in-out;
+    width: 100%;  /* Ensures buttons don't exceed sidebar width */
+    border: none;
+    cursor: pointer;
     margin-bottom: 10px;
+    box-sizing: border-box;
 }
 
-.sidebar nav .nav-link.active {
+.sidebar .nav-link.active {
     background: #1abc9c;
 }
 
-.sidebar nav .nav-link:hover {
+.sidebar .nav-link:hover,
+.sidebar .dark-mode-btn:hover,
+.sidebar .logout-btn:hover {
     background: #16a085;
 }
 
-/* Toggle Dark Mode Button */
-.toggle-btn {
-    width: 100%;
-    padding: 12px 20px;
-    background-color: #3498db;
+/* Logout Button Styling */
+.sidebar .logout-btn {
+    background: #e74c3c;
     color: white;
-    border-radius: 5px;
-    border: none;
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
 }
 
-.toggle-btn:hover {
-    background-color: #2980b9;
-}
-
-/* Dark Mode Button Styling */
-.sidebar .dark-mode-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    color: white;
-    background: #34495e;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    width: 100%;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    outline: none;
-}
-
-.sidebar .dark-mode-btn:hover {
-    background: #1abc9c;
-}
-
-body.dark-mode .toggle-btn {
-    background-color: #555;
-    color: #ecf0f1;
-}
-
-body.dark-mode .toggle-btn:hover {
-    background-color: #666;
+.sidebar .logout-btn:hover {
+    background: #c0392b;
 }
 
 /* Main Content */
@@ -169,7 +141,7 @@ body.dark-mode .toggle-btn:hover {
 #task-form {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Add spacing between inputs */
+    gap: 10px;
 }
 
 #task-form textarea,
@@ -180,12 +152,12 @@ body.dark-mode .toggle-btn:hover {
     border-radius: 8px;
     font-size: 16px;
     outline: none;
-    box-sizing: border-box; /* Ensure consistent box model */
+    box-sizing: border-box;
 }
 
 #task-form textarea {
     height: 60px;
-    resize: none; /* Prevent resizing of textareas */
+    resize: none;
 }
 
 /* Form Actions */
@@ -268,7 +240,7 @@ body.dark-mode .toggle-btn:hover {
     background-color: #ffcccc !important;
     color: red !important;
     font-weight: bold;
-    border: 2px solid red !important;  /* Red border around high-priority tasks */
+    border: 2px solid red !important;
 }
 
 /* Completed Task Highlight */
@@ -277,33 +249,63 @@ body.dark-mode .toggle-btn:hover {
     color: #155724 !important;
 }
 
-/* Buttons in Task Table */
-.delete-btn,
-.done-btn {
-    padding: 8px 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.delete-btn {
+/* Task Table Action Buttons */
+.task-table .delete-btn {
     background-color: #e74c3c;
     color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.delete-btn:hover {
+.task-table .delete-btn:hover {
     background-color: #c0392b;
 }
 
-.done-btn {
-    background-color: #3498db;
+.task-table .done-btn {
+    background-color: #2ecc71;
     color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.done-btn:hover {
-    background-color: #2980b9;
+.task-table .done-btn:hover {
+    background-color: #27ae60;
+}
+
+/* Adjust button spacing inside the task row */
+.task-table td button {
+    margin-right: 10px;
+}
+
+/* Password Field Wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 50px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 22px;
+    color: #3498db;
 }
 
 /* Responsive Design */
