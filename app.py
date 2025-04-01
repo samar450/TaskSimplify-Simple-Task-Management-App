@@ -4,24 +4,32 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
 from datetime import timedelta
+from dotenv import load_dotenv  # Import dotenv to load environment variables
+
+# Load environment variables from a .env file
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  
-#SQLite Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'  # Using SQLite database
+
+# Secret key from environment variable or randomly generated if not set
+app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))  # Use env variable or random key
+
+# SQLite Configuration (or use production DB URI via environment variable)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///tasks.db')  # Use env variable for DB URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  
+login_manager.login_view = 'login'
 login_manager.login_message_category = "info"
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(512), nullable=False)  
+
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(255), nullable=False)
@@ -53,7 +61,7 @@ def add_task():
     description = request.form.get('description', '')[:100]
     priority = request.form.get('priority')
 
-    new_task = Task(task=task, due_date=due_date, due_time=due_time, description=description, 
+    new_task = Task(task=task, due_date=due_date, due_time=due_time, description=description,
                     priority=priority, completed=False, user_id=current_user.id)
 
     db.session.add(new_task)
