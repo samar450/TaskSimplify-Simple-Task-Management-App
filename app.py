@@ -4,19 +4,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import os
 from datetime import timedelta
-from dotenv import load_dotenv  # Import dotenv to load environment variables
+from dotenv import load_dotenv
 
-# Load environment variables from a .env file
 load_dotenv()
 
 app = Flask(__name__)
 
-# Secret key from environment variable or randomly generated if not set
-app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))  # Use env variable or random key
+app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))
 
-# SQLite Configuration (or use production DB URI via environment variable)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///tasks.db')  # Use env variable for DB URI
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///tasks.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
 
 db = SQLAlchemy(app)
